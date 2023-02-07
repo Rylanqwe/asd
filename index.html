@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Connect to Phantom Wallet</title>
+  </head>
+  <body>
+    <h1>Connect to Phantom Wallet</h1>
+    <button id="connect-button">Connect</button>
+
+    <script src="https://unpkg.com/@solana/web3.js@0.21.1/dist/solana-web3.min.js"></script>
+    <script src="https://unpkg.com/@solana/phantom-web3@0.21.0/dist/phantom-web3.min.js"></script>
+    <script>
+      const solanaWeb3 = require('@solana/web3.js');
+      const { Connection } = require('@solana/phantom-web3');
+
+      async function connectWallet() {
+        const connection = new Connection({
+          network: 'mainnet',
+          provider: solanaWnpmeb3.fetchProvider('https://api.solana.com'),
+        });
+
+        const wallet = await connection.connect();
+
+        console.log(`Connected wallet address: ${wallet.publicKey.toBase58()}`);
+
+        // approve a transaction
+        const transaction = new solanaWeb3.Transaction({
+          data: solanaWeb3.base64Encode(Buffer.from('hello world')),
+          keys: [wallet],
+        });
+
+        const response = await connection.sendTransaction(transaction);
+        console.log(`Transaction ID: ${response.transactionId}`);
+      }
+
+      // Connect to the wallet when the "Connect" button is clicked
+      document.getElementById("connect-button").addEventListener("click", connectWallet);
+    </script>
+  </body>
+</html>
